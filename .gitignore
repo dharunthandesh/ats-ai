@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment configurations & secrets
+.env
+.env.*
+!.env.example
+*.env
+
+# Uploads & User Generated Documents
+uploads/
+server/uploads/
+server/uploads/resumes/*
+!server/uploads/resumes/.gitkeep
+
+# Build artifacts
+dist/
+client/dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
