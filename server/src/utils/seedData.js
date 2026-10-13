@@ -19,21 +19,32 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const seedDatabase = async () => {
-  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/talentpulse_ats';
-  console.log(`[Seeder] Connecting to MongoDB: ${uri}`);
-  await mongoose.connect(uri);
+export const seedDatabase = async ({ exitOnComplete = true, clearExisting = true } = {}) => {
+  if (mongoose.connection.readyState !== 1) {
+    const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/talentpulse_ats';
+    console.log(`[Seeder] Connecting to MongoDB: ${uri}`);
+    await mongoose.connect(uri);
+  }
 
-  console.log('[Seeder] Clearing previous data...');
-  await Promise.all([
-    User.deleteMany({}),
-    Job.deleteMany({}),
-    Candidate.deleteMany({}),
-    Application.deleteMany({}),
-    Interview.deleteMany({}),
-    Evaluation.deleteMany({}),
-    ActivityLog.deleteMany({}),
-  ]);
+  if (clearExisting) {
+    console.log('[Seeder] Clearing previous data...');
+    await Promise.all([
+      User.deleteMany({}),
+      Job.deleteMany({}),
+      Candidate.deleteMany({}),
+      Application.deleteMany({}),
+      Interview.deleteMany({}),
+      Evaluation.deleteMany({}),
+      ActivityLog.deleteMany({}),
+    ]);
+  } else {
+    const count = await User.countDocuments();
+    if (count > 0) {
+      console.log(`[Seeder] Found existing database data (${count} users). Skipping fresh seed.`);
+      if (exitOnComplete) process.exit(0);
+      return;
+    }
+  }
 
   // Ensure uploads directory exists
   const uploadDir = path.join(__dirname, '../../uploads/resumes');
@@ -331,10 +342,15 @@ const seedDatabase = async () => {
   console.log(' 3. Technical Interviewer: interviewer@talentpulse.ai / password123');
   console.log('=============================================================\n');
 
-  process.exit(0);
+  if (exitOnComplete) {
+    process.exit(0);
+  }
 };
 
-seedDatabase().catch((err) => {
-  console.error('[Seeder Error]:', err);
-  process.exit(1);
-});
+const isDirectRun = process.argv[1]?.replace(/\\/g, '/').endsWith('seedData.js');
+if (isDirectRun) {
+  seedDatabase({ exitOnComplete: true, clearExisting: true }).catch((err) => {
+    console.error('[Seeder Error]:', err);
+    process.exit(1);
+  });
+}

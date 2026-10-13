@@ -36,7 +36,7 @@ export const verifyToken = (token) => {
  * @param {object} userData
  * @returns {Promise<{ user: object, token: string }>}
  */
-export const registerUser = async ({ name, email, password, role }) => {
+export const registerUser = async ({ name, email, password, role, creatorUser }) => {
   const normalizedEmail = email.toLowerCase().trim();
 
   const existingUser = await User.findOne({ email: normalizedEmail });
@@ -44,7 +44,17 @@ export const registerUser = async ({ name, email, password, role }) => {
     throw ApiError.conflict('An account with this email address already exists.');
   }
 
-  const assignedRole = role || USER_ROLES.RECRUITER;
+  // Security: Prevent unauthenticated privilege escalation.
+  // Public registration defaults to RECRUITER; only authenticated HR_ADMIN can assign privileged roles
+  let assignedRole = USER_ROLES.RECRUITER;
+  if (
+    creatorUser &&
+    (creatorUser.role === USER_ROLES.ADMIN || creatorUser.role === USER_ROLES.HR_ADMIN) &&
+    role &&
+    Object.values(USER_ROLES).includes(role)
+  ) {
+    assignedRole = role;
+  }
 
   const newUser = await User.create({
     name: name.trim(),

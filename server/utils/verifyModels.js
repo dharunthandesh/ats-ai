@@ -25,7 +25,7 @@ import {
 
 const verifyModels = async () => {
   console.log('\n--- Commencing Mongoose Model Verification ---');
-  await connectDB();
+  await connectDB({ autoSeed: false });
 
   const models = [
     { name: 'User', model: User },

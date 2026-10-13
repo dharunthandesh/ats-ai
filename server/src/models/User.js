@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { ROLES, ROLE_LIST } from '../constants/roles.js';
+import { env } from '../config/env.js';
 
 const userSchema = new mongoose.Schema(
   {
@@ -86,11 +87,11 @@ userSchema.methods.generateAuthToken = function () {
       role: this.role,
       department: this.department,
     },
-    process.env.JWT_SECRET || 'dev_jwt_secret',
+    env.JWT_SECRET,
     {
-      expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+      expiresIn: env.JWT_EXPIRES_IN,
     }
   );
 };
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.models.User || mongoose.model('User', userSchema);

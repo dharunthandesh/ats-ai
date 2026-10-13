@@ -13,6 +13,8 @@ uploads/
 server/uploads/
 server/uploads/resumes/*
 !server/uploads/resumes/.gitkeep
+server/test_fixtures/
+
 
 # Build artifacts
 dist/

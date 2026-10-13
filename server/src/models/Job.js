@@ -80,4 +80,4 @@ const jobSchema = new mongoose.Schema(
 // Compound index for search and filtering
 jobSchema.index({ status: 1, department: 1, createdAt: -1 });
 
-export const Job = mongoose.model('Job', jobSchema);
+export const Job = mongoose.models.Job || mongoose.model('Job', jobSchema);

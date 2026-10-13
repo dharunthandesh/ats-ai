@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { register, login, getMe, logout } from '../controllers/auth.controller.js';
 import { validateRegister, validateLogin } from '../validators/auth.validator.js';
 import { authenticateUser } from '../middleware/auth.middleware.js';
+import { authRateLimiter } from '../middleware/rateLimiter.middleware.js';
 
 const router = Router();
 
@@ -9,13 +10,13 @@ const router = Router();
  * @route POST /api/v1/auth/register
  * @desc Register a new user account
  */
-router.post('/register', validateRegister, register);
+router.post('/register', authRateLimiter, validateRegister, register);
 
 /**
  * @route POST /api/v1/auth/login
  * @desc Authenticate user and issue JWT token
  */
-router.post('/login', validateLogin, login);
+router.post('/login', authRateLimiter, validateLogin, login);
 
 /**
  * @route GET /api/v1/auth/me

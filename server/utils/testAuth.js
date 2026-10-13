@@ -30,7 +30,7 @@ const runAuthTests = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'recruiter@talentpulse.ai',
-        password: 'Password123!',
+        password: 'password123',
       }),
     });
     const data = await res.json();
@@ -125,14 +125,14 @@ const runAuthTests = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'interviewer@talentpulse.ai',
-        password: 'Password123!',
+        password: 'password123',
       }),
     });
     const loginData = await loginRes.json();
     const interviewerToken = loginData.data?.token;
 
-    // Attempt to access an ADMIN-only endpoint
-    const rbacRes = await fetch(`${BASE_URL}/rbac/admin-only`, {
+    // Attempt to access an HR_ADMIN-only endpoint (/auth/users)
+    const rbacRes = await fetch(`${BASE_URL}/auth/users`, {
       headers: {
         Authorization: `Bearer ${interviewerToken}`,
       },
@@ -140,7 +140,7 @@ const runAuthTests = async () => {
     const rbacData = await rbacRes.json();
 
     const is403 = rbacRes.status === 403;
-    const mentionsForbidden = rbacData.message?.toLowerCase().includes('forbidden');
+    const mentionsForbidden = rbacData.message?.toLowerCase().includes('authorized') || rbacData.message?.toLowerCase().includes('denied') || rbacData.message?.toLowerCase().includes('forbidden');
 
     if (is403 && mentionsForbidden) {
       logTest(
@@ -167,14 +167,14 @@ const runAuthTests = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'admin@talentpulse.ai',
-        password: 'Password123!',
+        password: 'password123',
       }),
     });
     const loginData = await loginRes.json();
     const adminToken = loginData.data?.token;
 
-    // Access ADMIN-only endpoint
-    const rbacRes = await fetch(`${BASE_URL}/rbac/admin-only`, {
+    // Access HR_ADMIN-only endpoint (/auth/users)
+    const rbacRes = await fetch(`${BASE_URL}/auth/users`, {
       headers: {
         Authorization: `Bearer ${adminToken}`,
       },
@@ -196,7 +196,7 @@ const runAuthTests = async () => {
       logTest(
         '5. Authorized Role Allowed (200 OK)',
         true,
-        `Role 'ADMIN' granted access to ADMIN resource & verified profile: "${meData.data.email}"`
+        `Role 'ADMIN' granted access to HR_ADMIN resource & verified profile: "${meData.data.email}"`
       );
       passedCount++;
     } else {

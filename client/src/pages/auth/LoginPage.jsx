@@ -46,17 +46,17 @@ export const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background glow effects */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#5200ff]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#8e4eff]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10 space-y-6">
         {/* Brand Banner */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 mx-auto flex items-center justify-center shadow-xl shadow-indigo-500/25">
+          <div className="w-14 h-14 rounded-2xl bg-[#5200ff] mx-auto flex items-center justify-center shadow-xl shadow-[#5200ff]/35">
             <Sparkles className="w-7 h-7 text-white animate-pulse" />
           </div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
-            Talent<span className="text-indigo-400">Pulse</span> AI
+          <h1 className="text-2xl font-extrabold text-white tracking-tight font-outfit">
+            Talent<span className="text-[#a15bfe]">Pulse</span> AI
           </h1>
           <p className="text-xs text-slate-400 max-w-xs mx-auto">
             AI-Enabled Recruitment & Candidate Tracking Platform (ATS)
@@ -99,7 +99,7 @@ export const LoginPage = () => {
               variant="primary"
               size="lg"
               isLoading={loading}
-              className="w-full shadow-indigo-600/30 font-semibold"
+              className="w-full shadow-lg shadow-[#5200ff]/30 font-semibold"
               icon={LogIn}
             >
               Sign In to ATS
@@ -115,31 +115,31 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleQuickDemoLogin('admin@talentpulse.ai')}
-              className="w-full p-2.5 rounded-xl bg-purple-950/30 hover:bg-purple-950/60 border border-purple-800/50 hover:border-purple-600 text-left transition-all flex items-center justify-between group"
+              className="w-full p-2.5 rounded-xl bg-[#8e4eff]/15 hover:bg-[#8e4eff]/25 border border-[#8e4eff]/35 hover:border-[#8e4eff] text-left transition-all flex items-center justify-between group"
             >
               <div className="flex items-center gap-2.5">
-                <Shield className="w-4 h-4 text-purple-400" />
+                <Shield className="w-4 h-4 text-[#c4b5fd]" />
                 <div>
-                  <p className="text-xs font-bold text-purple-200">HR Administrator</p>
-                  <p className="text-[10px] text-purple-400/80">admin@talentpulse.ai</p>
+                  <p className="text-xs font-bold text-white">HR Administrator</p>
+                  <p className="text-[10px] text-[#c4b5fd]/80">admin@talentpulse.ai</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-purple-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-[#c4b5fd] group-hover:translate-x-1 transition-transform" />
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickDemoLogin('recruiter@talentpulse.ai')}
-              className="w-full p-2.5 rounded-xl bg-indigo-950/30 hover:bg-indigo-950/60 border border-indigo-800/50 hover:border-indigo-600 text-left transition-all flex items-center justify-between group"
+              className="w-full p-2.5 rounded-xl bg-[#5200ff]/20 hover:bg-[#5200ff]/30 border border-[#5200ff]/40 hover:border-[#5200ff] text-left transition-all flex items-center justify-between group"
             >
               <div className="flex items-center gap-2.5">
-                <UserCheck className="w-4 h-4 text-indigo-400" />
+                <UserCheck className="w-4 h-4 text-[#a15bfe]" />
                 <div>
-                  <p className="text-xs font-bold text-indigo-200">Lead Recruiter</p>
-                  <p className="text-[10px] text-indigo-400/80">recruiter@talentpulse.ai</p>
+                  <p className="text-xs font-bold text-white">Lead Recruiter</p>
+                  <p className="text-[10px] text-[#c4b5fd]/80">recruiter@talentpulse.ai</p>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-[#a15bfe] group-hover:translate-x-1 transition-transform" />
             </button>
 
             <button

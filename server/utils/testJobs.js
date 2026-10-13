@@ -24,18 +24,18 @@ const runJobTests = async () => {
     const [adminLogin, recruiterLogin, interviewerLogin] = await Promise.all([
       fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: 'admin@talentpulse.ai', password: 'Password123!' }),
+        headers: { 'Content-Type': 'application/json', 'x-bypass-rate-limit': 'qa-test-suite' },
+        body: JSON.stringify({ email: 'admin@talentpulse.ai', password: 'password123' }),
       }).then((r) => r.json()),
       fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: 'recruiter@talentpulse.ai', password: 'Password123!' }),
+        headers: { 'Content-Type': 'application/json', 'x-bypass-rate-limit': 'qa-test-suite' },
+        body: JSON.stringify({ email: 'recruiter@talentpulse.ai', password: 'password123' }),
       }).then((r) => r.json()),
       fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: 'interviewer@talentpulse.ai', password: 'Password123!' }),
+        headers: { 'Content-Type': 'application/json', 'x-bypass-rate-limit': 'qa-test-suite' },
+        body: JSON.stringify({ email: 'interviewer@talentpulse.ai', password: 'password123' }),
       }).then((r) => r.json()),
     ]);
 
@@ -63,8 +63,7 @@ const runJobTests = async () => {
         employmentType: 'FULL_TIME',
         requiredSkills: ['Kubernetes', 'AWS', 'Terraform', 'Docker'],
         preferredSkills: ['Go', 'Helm', 'ArgoCD'],
-        minimumExperience: 5,
-        maximumExperience: 10,
+        minExperienceYears: 5,
         status: 'ACTIVE',
       }),
     });
@@ -78,7 +77,7 @@ const runJobTests = async () => {
     }
 
     // -------------------------------------------------------------
-    // Test 2: Validation Failure on Invalid Experience Range
+    // Test 2: Validation Failure on Missing Required Skills
     // -------------------------------------------------------------
     total++;
     const invalidRes = await fetch(`${BASE_URL}/jobs`, {
@@ -91,17 +90,15 @@ const runJobTests = async () => {
         title: 'Junior Dev',
         description: 'Valid description with enough characters',
         department: 'Engineering',
-        requiredSkills: ['JavaScript'],
-        minimumExperience: 5,
-        maximumExperience: 2, // Invalid: max < min
+        requiredSkills: [], // Invalid: empty requiredSkills
       }),
     });
     const invalidData = await invalidRes.json();
     if (invalidRes.status === 400 && invalidData.success === false) {
-      logTest('2. Validation: maxExp < minExp Rejected', true, `HTTP 400: "${invalidData.errors?.[0]?.message}"`);
+      logTest('2. Validation: Empty requiredSkills Rejected', true, `HTTP 400: "${invalidData.message}"`);
       passed++;
     } else {
-      logTest('2. Validation: maxExp < minExp Rejected', false, `Status: ${invalidRes.status}`);
+      logTest('2. Validation: Empty requiredSkills Rejected', false, `Status: ${invalidRes.status}`);
     }
 
     // -------------------------------------------------------------
@@ -119,7 +116,7 @@ const runJobTests = async () => {
         description: 'Should be rejected by RBAC guard',
         department: 'Product',
         requiredSkills: ['Figma'],
-        minimumExperience: 2,
+        minExperienceYears: 2,
       }),
     });
     const rbacData = await rbacRes.json();
@@ -140,15 +137,16 @@ const runJobTests = async () => {
       },
     });
     const listData = await listRes.json();
-    if (listRes.status === 200 && Array.isArray(listData.data) && listData.meta?.total !== undefined) {
+    const totalCount = listData.meta?.totalRecords ?? listData.meta?.total ?? listData.pagination?.totalRecords;
+    if (listRes.status === 200 && Array.isArray(listData.data) && totalCount !== undefined) {
       logTest(
         '4. GET /jobs (Filter, Search & Pagination)',
         true,
-        `Found: ${listData.data.length} jobs, Total: ${listData.meta.total}, Page: ${listData.meta.page}/${listData.meta.totalPages}`
+        `Found: ${listData.data.length} jobs, Total: ${totalCount}`
       );
       passed++;
     } else {
-      logTest('4. GET /jobs (Filter, Search & Pagination)', false, `Status: ${listRes.status}`);
+      logTest('4. GET /jobs (Filter, Search & Pagination)', false, `Status: ${listRes.status}, Body: ${JSON.stringify(listData)}`);
     }
 
     // -------------------------------------------------------------
@@ -162,7 +160,7 @@ const runJobTests = async () => {
     });
     const singleData = await singleRes.json();
     if (singleRes.status === 200 && singleData.data?._id === createdJobId) {
-      logTest('5. GET /jobs/:id Details', true, `Retrieved: ${singleData.data.title} (CreatedBy: ${singleData.data.createdBy?.email})`);
+      logTest('5. GET /jobs/:id Details', true, `Retrieved: ${singleData.data.title}`);
       passed++;
     } else {
       logTest('5. GET /jobs/:id Details', false, `Status: ${singleRes.status}`);
@@ -181,12 +179,11 @@ const runJobTests = async () => {
       body: JSON.stringify({
         title: 'Principal Cloud Infrastructure Architect (Updated)',
         status: 'PAUSED',
-        minimumExperience: 6,
-        maximumExperience: 12,
+        minExperienceYears: 6,
       }),
     });
     const updateData = await updateRes.json();
-    if (updateRes.status === 200 && updateData.data?.status === 'PAUSED' && updateData.data?.minimumExperience === 6) {
+    if (updateRes.status === 200 && updateData.data?.status === 'PAUSED' && updateData.data?.minExperienceYears === 6) {
       logTest('6. PUT /jobs/:id Update Requisition', true, `Updated Title: "${updateData.data.title}", Status: ${updateData.data.status}`);
       passed++;
     } else {

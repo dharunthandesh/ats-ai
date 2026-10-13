@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 export const USER_ROLES = {
   ADMIN: 'ADMIN',
-  HR_ADMIN: 'ADMIN', // mapped alias
+  HR_ADMIN: 'HR_ADMIN',
   RECRUITER: 'RECRUITER',
   INTERVIEWER: 'INTERVIEWER',
 };
@@ -69,4 +69,4 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.models.User || mongoose.model('User', userSchema);

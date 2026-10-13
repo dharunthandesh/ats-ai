@@ -77,4 +77,4 @@ const interviewSchema = new mongoose.Schema(
 interviewSchema.index({ interviewer: 1, scheduledAt: 1 });
 interviewSchema.index({ applicationId: 1, status: 1 });
 
-export const Interview = mongoose.model('Interview', interviewSchema);
+export const Interview = mongoose.models.Interview || mongoose.model('Interview', interviewSchema);

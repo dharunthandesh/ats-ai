@@ -76,4 +76,4 @@ const evaluationSchema = new mongoose.Schema(
 // Prevent duplicate evaluation from same interviewer for same interview
 evaluationSchema.index({ interviewId: 1, interviewerId: 1 }, { unique: true });
 
-export const Evaluation = mongoose.model('Evaluation', evaluationSchema);
+export const Evaluation = mongoose.models.Evaluation || mongoose.model('Evaluation', evaluationSchema);

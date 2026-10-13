@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User.js';
 import { ApiError } from '../utils/apiError.js';
+import { env } from '../config/env.js';
 
 export const protect = async (req, res, next) => {
   let token;
@@ -15,9 +16,8 @@ export const protect = async (req, res, next) => {
     return next(ApiError.unauthorized('Authentication token missing. Please sign in.'));
   }
 
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev_jwt_secret');
+    const decoded = jwt.verify(token, env.JWT_SECRET);
     const user = await User.findById(decoded.id).select('-password');
 
     if (!user) {

@@ -66,4 +66,4 @@ const interviewSchema = new mongoose.Schema(
   }
 );
 
-export const Interview = mongoose.model('Interview', interviewSchema);
+export const Interview = mongoose.models.Interview || mongoose.model('Interview', interviewSchema);

@@ -94,4 +94,4 @@ const candidateSchema = new mongoose.Schema(
   }
 );
 
-export const Candidate = mongoose.model('Candidate', candidateSchema);
+export const Candidate = mongoose.models.Candidate || mongoose.model('Candidate', candidateSchema);

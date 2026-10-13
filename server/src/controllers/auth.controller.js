@@ -16,8 +16,13 @@ export const register = async (req, res, next) => {
       throw ApiError.conflict('An account with this email address already exists.');
     }
 
-    // Default to RECRUITER if role is not specified
-    const assignedRole = role || ROLES.RECRUITER;
+    // Security: Prevent unauthenticated privilege escalation.
+    // Public registration always defaults to RECRUITER role.
+    // Privileged role assignment is only permitted when requested by an authenticated HR_ADMIN.
+    let assignedRole = ROLES.RECRUITER;
+    if (req.user && req.user.role === ROLES.HR_ADMIN && role && Object.values(ROLES).includes(role)) {
+      assignedRole = role;
+    }
 
     const user = await User.create({
       name,
@@ -136,3 +141,13 @@ export const updateUserRole = async (req, res, next) => {
     next(error);
   }
 };
+
+export const logout = async (req, res, next) => {
+  try {
+    return ApiResponse.success(res, null, 'User logged out successfully');
+  } catch (error) {
+    next(error);
+  }
+};
+
+

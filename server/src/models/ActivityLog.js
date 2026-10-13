@@ -49,4 +49,4 @@ const activityLogSchema = new mongoose.Schema(
   }
 );
 
-export const ActivityLog = mongoose.model('ActivityLog', activityLogSchema);
+export const ActivityLog = mongoose.models.ActivityLog || mongoose.model('ActivityLog', activityLogSchema);

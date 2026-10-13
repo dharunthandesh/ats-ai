@@ -12,9 +12,11 @@ export const Button = ({
 }) => {
   const variantStyles = {
     primary:
-      'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/25 border-transparent focus:ring-indigo-500',
+      'bg-[#5200ff] hover:bg-[#4300d1] text-white shadow-lg shadow-[#5200ff]/30 border-transparent focus:ring-[#5200ff]',
     secondary:
       'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700/80 focus:ring-slate-500',
+    dark:
+      'bg-[#0f1016] hover:bg-[#1f212e] text-white shadow-md border border-slate-800/80 focus:ring-slate-700',
     outline:
       'bg-transparent hover:bg-slate-800/60 text-slate-300 border-slate-700 focus:ring-slate-500',
     danger:

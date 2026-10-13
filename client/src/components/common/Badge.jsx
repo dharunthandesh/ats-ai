@@ -3,14 +3,16 @@ import React from 'react';
 export const Badge = ({ children, variant = 'slate', size = 'sm', className = '' }) => {
   const variantStyles = {
     slate: 'bg-slate-800/80 text-slate-300 border-slate-700/60',
-    indigo: 'bg-indigo-950/80 text-indigo-300 border-indigo-700/60',
+    indigo: 'bg-[#5200ff]/15 text-[#c4b5fd] border-[#5200ff]/35',
+    violet: 'bg-[#5200ff]/20 text-[#d7c1ff] border-[#5200ff]/40',
+    nexhire: 'bg-[#5200ff] text-white border-transparent shadow-sm shadow-[#5200ff]/30',
     blue: 'bg-blue-950/80 text-blue-300 border-blue-700/60',
     emerald: 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60',
     green: 'bg-green-950/80 text-green-300 border-green-700/60',
     amber: 'bg-amber-950/80 text-amber-300 border-amber-700/60',
     orange: 'bg-orange-950/80 text-orange-300 border-orange-700/60',
     rose: 'bg-rose-950/80 text-rose-300 border-rose-700/60',
-    purple: 'bg-purple-950/80 text-purple-300 border-purple-700/60',
+    purple: 'bg-[#5200ff]/20 text-[#d7c1ff] border-[#5200ff]/40',
   };
 
   const sizeStyles = {

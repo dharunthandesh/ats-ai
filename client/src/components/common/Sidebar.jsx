@@ -47,13 +47,13 @@ export const Sidebar = () => {
     <aside className="w-64 flex-shrink-0 flex flex-col h-screen glass-panel border-r border-slate-800/80 sticky top-0 z-30">
       {/* Brand Header */}
       <div className="p-6 border-b border-slate-800/80 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <div className="w-10 h-10 rounded-xl bg-[#5200ff] flex items-center justify-center shadow-lg shadow-[#5200ff]/35">
           <Sparkles className="w-5 h-5 text-white animate-pulse" />
         </div>
         <div>
-          <h1 className="font-extrabold text-lg text-white tracking-tight flex items-center gap-1.5">
-            Talent<span className="text-indigo-400">Pulse</span>
-            <span className="text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/50">
+          <h1 className="font-extrabold text-lg text-white tracking-tight flex items-center gap-1.5 font-outfit">
+            Talent<span className="text-[#a15bfe]">Pulse</span>
+            <span className="text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0.5 rounded bg-[#5200ff]/20 text-[#c4b5fd] border border-[#5200ff]/40">
               AI
             </span>
           </h1>
@@ -75,7 +75,7 @@ export const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
                   isActive
-                    ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/30 shadow-sm'
+                    ? 'bg-[#5200ff] text-white shadow-md shadow-[#5200ff]/30 font-semibold'
                     : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
                 }`
               }
